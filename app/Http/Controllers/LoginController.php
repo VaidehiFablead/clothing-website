@@ -12,7 +12,6 @@ class LoginController extends Controller
     {
         return view('login');
     }
-
     public function login(Request $request)
     {
         $user = Login::where('email', $request->email)->where('password', $request->password)->first();
