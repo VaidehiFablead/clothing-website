@@ -1,0 +1,31 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Product extends Model
+{
+    use HasFactory;
+
+    protected $table = 'product'; // your product table
+    protected $primaryKey = 'product_id'; // or just 'id' if you're using default
+
+    protected $fillable = [
+        'image',
+        'name',
+        'price',
+        'description',
+        'status',
+        'category_id',
+    ];
+
+    // Relationship: Product belongs to one Category
+    public function category()
+    {
+        return $this->belongsTo(Category::class, 'category_id', 'category_id');
+    }
+}
+
+

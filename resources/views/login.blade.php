@@ -44,7 +44,7 @@
                             <div class="col-md-6 col-lg-7 d-flex align-items-center">
                                 <div class="card-body p-4 p-lg-5 text-black">
 
-                                    <form method="post" id="loginForm" action="{{ route('login') }}">
+                                    <form method="post" id="loginForm">
                                         @csrf
                                         <div class="d-flex text-center mb-3 pb-1 ">
                                             <!-- <i class="fa-solid fa-fan fs-3 pe-2 "></i> -->
@@ -94,14 +94,14 @@
 
 
     <!-- Bootstrap core JavaScript-->
-    <script src="{{ asset('vendor/jquery/jquery.min.js')}}"></script>
-    <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+    <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 
     <!-- Core plugin JavaScript-->
-    <script src="{{ asset('vendor/jquery-easing/jquery.easing.min.js')}}"></script>
+    <script src="{{ asset('vendor/jquery-easing/jquery.easing.min.js') }}"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="{{ asset('js/sb-admin-2.min.js')}}"></script>
+    <script src="{{ asset('js/sb-admin-2.min.js') }}"></script>
 
     <!-- jquery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -124,10 +124,10 @@
     <script>
         $(document).ready(function() {
             $("#loginForm").on("submit", function(e) {
-                // e.preventDefault();
+                e.preventDefault();
 
-                var email = $("#email").val();
-                var password = $("#password").val();
+                let email = $("#email").val();
+                let password = $("#password").val();
                 let isValid = true;
 
                 $(".form-control").removeClass("is-invalid");
@@ -142,11 +142,44 @@
                     $("#password").addClass("is-invalid");
                     isValid = false;
                 }
-                if (!isValid) {
-                    return false;
-                }
 
-                // console.log("hello")
+                if (!isValid) return;
+
+                $.ajax({
+                    url: '/login',
+                    type: 'POST',
+                    data: {
+                        email: email,
+                        password: password,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Login Successful',
+                            text: 'Redirecting...',
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+
+                        // Redirect after short delay
+                        setTimeout(() => {
+                            window.location.href = "/tables";
+                        }, 2000);
+                    },
+                    error: function(xhr) {
+                        let message = "Something went wrong!";
+                        if (xhr.status === 422 || xhr.status === 400) {
+                            message = xhr.responseJSON?.message || "Invalid email or password.";
+                        }
+
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Login Failed',
+                            text: message,
+                        });
+                    }
+                });
             });
         });
     </script>

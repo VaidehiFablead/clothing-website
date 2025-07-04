@@ -1,25 +1,39 @@
 @extends('layout.app')
 
 @section('content')
-    <div class="container-fluid">
+    <div class="container">
+        <h2>Product List</h2>
+        @if(session('success'))
+            <div class="alert alert-success">{{ session('success') }}</div>
+        @endif
 
-        <!-- Page Heading -->
-        <h1 class="h3 mb-2 text-gray-800">Tables</h1>
-        <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
-            For more information about DataTables, please visit the <a target="_blank" href="https://datatables.net">official
-                DataTables documentation</a>.</p>
-
-        <!-- DataTales Example -->
-        <div class="card shadow mb-4">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
-            </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                    </table>
-                </div>
-            </div>
-        </div>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Images</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th>Category</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($product as $products)
+                    <tr>
+                        <td>
+                            @foreach (explode(',', $products->image) as $img)
+                                <img src="{{ asset('uploads/products/' . $img) }}" width="50" height="50">
+                            @endforeach
+                        </td>
+                        <td>{{ $products->name }}</td>
+                        <td>{{ $products->price }}</td>
+                        <td>{{ $products->description }}</td>
+                        <td>{{ $products->status }}</td>
+                        <td>{{ $products->category->name ?? '-' }}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
     </div>
 @endsection
