@@ -15,3 +15,6 @@
 {{-- <img src="{{ asset('assets/img/undraw_profile_1.svg') }}" alt="">
 <img src="{{ asset('assets/img/undraw_profile_2.svg') }}" alt="">
 <img src="{{ asset('assets/img/undraw_profile_3.svg') }}" alt=""> --}}
+
+ <!-- SweetAlert2 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

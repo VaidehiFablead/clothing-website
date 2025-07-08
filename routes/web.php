@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
@@ -47,9 +48,12 @@ Route::post('/profile', [ProfileController::class, 'updateProfile'])->name('prof
 
 
 // tables
-Route::get('/tables', function () {
-    return view('tables');
-})->name('tables');
+
+Route::get('/tables', [ProductController::class, 'showTable'])->name('tables');
+Route::get('/add-product', [ProductController::class, 'create']);
+Route::post('/store-product', [ProductController::class, 'store']);
+Route::get('/edit-product/{id}', [ProductController::class, 'edit']);        // Optional
+Route::delete('/delete-product/{id}', [ProductController::class, 'destroy']); // Optional
 
 
 // change password
@@ -75,7 +79,7 @@ Route::post('/addcategoryForm', [CategoryController::class, 'store'])->name('add
 // viewcategory
 
 Route::get('/viewcategory', [CategoryController::class, 'index'])->name('viewcategory');
-Route::post('/category/store', [CategoryController::class, 'store'])->name('category.store'); 
+Route::post('/category/store', [CategoryController::class, 'store'])->name('category.store');
 Route::get('/category/edit/{id}', [CategoryController::class, 'edit'])->name('category.edit');
 Route::post('/category/update/{id}', [CategoryController::class, 'update'])->name('category.update');
 Route::post('/category/delete/{id}', [CategoryController::class, 'destroy'])->name('category.delete');
@@ -85,9 +89,16 @@ Route::post('/category/delete/{id}', [CategoryController::class, 'destroy'])->na
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 
+// add new product
+Route::post('/product/store', [ProductController::class, 'store'])->name('product.store');
+Route::post('/product/delete/{id}', [ProductController::class, 'deleteProduct'])->name('product.delete');
+Route::get('/edit-product/{id}', [ProductController::class, 'edit'])->name('product.edit');
+Route::post('/update-product/{id}', [ProductController::class, 'update'])->name('product.update');
+
 
 // view product
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 Route::get('/product', [ProductController::class, 'index'])->name('product');
 
-// Route::get('/product', [ProductController::class, 'index'])->name('product');
+// add customer
+Route::get('/addcustomer', [CustomerController::class, 'index'])->name('addcustomer');

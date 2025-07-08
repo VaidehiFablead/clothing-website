@@ -21,7 +21,7 @@ class LoginController extends Controller
             Session::put('email',$user->email);
 
         if ($user) {
-            return redirect('/tables');
+              return response()->json(['success' => true], 200);
         } else {
             return back()->with('error', 'Invalid email or password');
         }

@@ -22,14 +22,15 @@ class ProductController extends Controller
             'description' => 'nullable|string',
             'price' => 'required|numeric',
             'status' => 'required|string',
-            'images.*' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg'
         ]);
 
         $imageNames = [];
 
         if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $image) {
-                $name = time() . '_' . $image->getClientOriginalName();
+            // dd($request->hasFile('images'));
+            foreach ($request->file('images') as $index => $image) {
+                $name = time() . '_' . $index . '_' . $image->getClientOriginalName();
                 $image->move(public_path('uploads/products'), $name);
                 $imageNames[] = $name;
             }
@@ -44,12 +45,72 @@ class ProductController extends Controller
             'category_id' => $request->category_id,
         ]);
 
+
         return redirect()->back()->with('success', 'Product added successfully!');
+    }
+
+    //  Add this method to show product table
+    public function showTable()
+    {
+        $products = Product::with('category')->get(); // eager load category
+        return view('tables', compact('products'));
     }
 
     public function index()
     {
-        $product = Product::with('category')->get(); // eager load category
+        $product = Product::with('category')->get(); // unused unless needed elsewhere
         return view('product', compact('product'));
+    }
+
+
+
+    public function deleteProduct($id)
+    {
+        $product = Product::findOrFail($id);
+        $product->delete();
+        return redirect()->route('tables')->with('success', 'Product deleted.');
+    }
+
+    public function edit($id)
+    {
+        $product = Product::findOrFail($id);
+        $categories = Category::all(); // Assuming you want to allow category selection
+        return view('editProduct', compact('product', 'categories'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $product = Product::findOrFail($id);
+
+        $validated = $request->validate([
+            'name' => 'required',
+            'category_id' => 'required',
+            'price' => 'required|numeric',
+            'description' => 'required',
+            'status' => 'required',
+            'images.*' => 'nullable|image|mimes:jpg,jpeg',
+        ]);
+
+        // Handle image upload if new images provided
+        if ($request->hasFile('images')) {
+            $images = [];
+            foreach ($request->file('images') as $image) {
+                $filename = time() . '_' . $image->getClientOriginalName();
+                $image->move(public_path('uploads/products'), $filename);
+                $images[] = $filename;
+            }
+            $product->image = implode(',', $images);
+        }
+
+        // Update other fields
+        $product->update([
+            'name' => $request->name,
+            'category_id' => $request->category_id,
+            'price' => $request->price,
+            'description' => $request->description,
+            'status' => $request->status,
+        ]);
+
+        return response()->json(['message' => 'Product updated successfully.']);
     }
 }
