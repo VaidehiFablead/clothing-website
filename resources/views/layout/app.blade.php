@@ -43,7 +43,7 @@
     </div>
 
     {{-- JS Scripts --}}
-    @yield('scripts') 
+    @stack('scripts')
 </body>
 
 </html>

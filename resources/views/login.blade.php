@@ -126,8 +126,8 @@
             $("#loginForm").on("submit", function(e) {
                 e.preventDefault();
 
-                let email = $("#email").val();
-                let password = $("#password").val();
+                    let email = $("#email").val();
+                    let password = $("#password").val();
                 let isValid = true;
 
                 $(".form-control").removeClass("is-invalid");
