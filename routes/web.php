@@ -5,6 +5,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ViewCustomerController;
 use App\Models\Category;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Auth\Events\Logout;
@@ -26,14 +27,18 @@ use Illuminate\Support\Facades\Route;
 // });
 
 // Login
-Route::get('/', function () {
-    return view('login');
-});
-// Show login form (GET)
-Route::get('/login', [LoginController::class, 'showLogin'])->name('login.form');
+// Route::get('/', function () {
+//     return view('login');
+// });
+// // Show login form (GET)
+// Route::get('/login', [LoginController::class, 'showLogin'])->name('login.form');
 
-// Handle login form submission (POST)
-Route::post('/login', [LoginController::class, 'login'])->name('login');
+// // Handle login form submission (POST)
+// Route::post('/login', [LoginController::class, 'login'])->name('login');
+
+
+Route::get('/login', [LoginController::class, 'showLogin'])->name('login'); // ✅ add ->name('login')
+Route::post('/login', [LoginController::class, 'login']);
 
 
 // profile
@@ -100,5 +105,31 @@ Route::post('/update-product/{id}', [ProductController::class, 'update'])->name(
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 Route::get('/product', [ProductController::class, 'index'])->name('product');
 
-// add customer
+// Show the form
 Route::get('/addcustomer', [CustomerController::class, 'index'])->name('addcustomer');
+
+// Handle form POST (submission)
+Route::post('/addcustomer', [CustomerController::class, 'store'])->name('addcustomer.store');
+
+
+
+
+// view Customer
+Route::get('/viewcustomer', [ViewCustomerController::class, 'show'])->name('viewcustomer');
+Route::get('/viewcustomer', [ViewCustomerController::class, 'showTable'])->name('viewcustomer');
+Route::post('/customer/delete/{id}', [ViewCustomerController::class, 'deleteCustomer'])->name('customer.delete');
+
+// Show edit form
+Route::get('/customer/edit/{id}', [ViewCustomerController::class, 'edit'])->name('customer.edit');
+
+// Handle update
+Route::post('/customer/update/{id}', [ViewCustomerController::class, 'update'])->name('customer.update');
+
+
+
+
+
+// middleware
+// Route::get('/', function () {
+//     return view('login');
+// })->middleware('auth');

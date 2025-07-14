@@ -1,5 +1,7 @@
 <!-- jQuery -->
 <script src="{{ asset('assets/vendor/jquery/jquery.min.js') }}"></script>
+<script src="{{ asset('https://code.jquery.com/jquery-3.6.0.min.js') }}"></script>
+
 
 <!-- Bootstrap Bundle -->
 <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
@@ -16,5 +18,5 @@
 <img src="{{ asset('assets/img/undraw_profile_2.svg') }}" alt="">
 <img src="{{ asset('assets/img/undraw_profile_3.svg') }}" alt=""> --}}
 
- <!-- SweetAlert2 CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!-- SweetAlert2 CDN -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
