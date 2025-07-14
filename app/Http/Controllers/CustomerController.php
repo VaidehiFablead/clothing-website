@@ -14,15 +14,15 @@ class CustomerController extends Controller
 
     public function store(Request $request)
     {
-
         $request->validate([
             'name' => 'required',
             'email' => 'required|email',
             'password' => 'required|min:6',
-            'image' => 'nullable|image|mimes:jpeg,jpg,png',
+            'image' => 'required|image|mimes:jpg,jpeg',
             'gender' => 'required',
             'city' => 'required',
             'address' => 'required',
+            'contact' => 'required|digits:10',
         ]);
 
         $imageName = null;
@@ -40,9 +40,10 @@ class CustomerController extends Controller
             'image' => $imageName,
             'gender' => $request->gender,
             'city' => $request->city,
-            'address' => $request->address
+            'address' => $request->address,
+            'contact' => $request->contact,
         ]);
 
-        return redirect()->back()->with('success', 'Customer added successfully!');
+        return response()->json(['success' => true, 'message' => 'Customer added successfully!']);
     }
 }

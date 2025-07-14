@@ -9,15 +9,19 @@ class Customer extends Model
 {
     use HasFactory;
 
-    protected $table="customer";
+    protected $table = "customer";
 
-    protected $fillable =[
+    protected $primaryKey = 'customer_id'; // ✅ Tell Laravel your primary key
+
+    public $timestamps = true;
+    protected $fillable = [
         'name',
         'email',
         'password',
         'image',
-        'grnder',
+        'gender',
         'city',
-        'address'
+        'address',
+        'contact'
     ];
 }
