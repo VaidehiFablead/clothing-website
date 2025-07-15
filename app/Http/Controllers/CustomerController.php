@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class CustomerController extends Controller
 {
-    public function index()
+   public function index()
     {
         return view('addcustomer');
     }
@@ -16,9 +16,9 @@ class CustomerController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:customer,email',
             'password' => 'required|min:6',
-            'image' => 'required|image|mimes:jpg,jpeg',
+            'image' => 'required|image|mimes:jpg,jpeg,png',
             'gender' => 'required',
             'city' => 'required',
             'address' => 'required',

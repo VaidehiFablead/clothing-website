@@ -51,6 +51,6 @@
     <script src="{{ asset('assets/js/sb-admin-2.min.js') }}"></script>
 
     <!-- ✅ Your Blade script stacks --> --}}
-    {{-- @stack('script') <!-- ✅ THIS is now correct --> --}}
+    @stack('scripts') <!-- ✅ sTHIS is now correct -->
 </body>
 </html>

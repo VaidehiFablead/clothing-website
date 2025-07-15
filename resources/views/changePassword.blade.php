@@ -37,7 +37,13 @@
                     <input type="password" id="new_password" name="new_password" class="form-control" />
                     <div class="invalid-feedback">Password must be at least 6 characters</div>
                 </div>
-
+                
+                <!-- Confirm new password -->
+                <div class="form-outline mb-4">
+                    <label class="form-label" for="new_password_confirmation">Confirm New Password:</label>
+                    <input type="password" id="new_password_confirmation" name="new_password_confirmation"
+                        class="form-control" />
+                </div>
                 <button type="submit" class="btn btn-success" id="updatepass">Update Password</button>
         </div>
         </form>

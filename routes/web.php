@@ -3,6 +3,7 @@
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ViewCustomerController;
@@ -22,21 +23,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/', function () {
-//     return view('index');
-// });
-
-// Login
-// Route::get('/', function () {
-//     return view('login');
-// });
-// // Show login form (GET)
-// Route::get('/login', [LoginController::class, 'showLogin'])->name('login.form');
-
-// // Handle login form submission (POST)
-// Route::post('/login', [LoginController::class, 'login'])->name('login');
-
-
 Route::get('/login', [LoginController::class, 'showLogin'])->name('login'); // ✅ add ->name('login')
 Route::post('/login', [LoginController::class, 'login']);
 
@@ -55,8 +41,11 @@ Route::post('/profile', [ProfileController::class, 'updateProfile'])->name('prof
 // tables
 
 Route::get('/tables', [ProductController::class, 'showTable'])->name('tables');
-Route::get('/add-product', [ProductController::class, 'create']);
-Route::post('/store-product', [ProductController::class, 'store']);
+// Show form (GET)
+Route::get('/add-product', [ProductController::class, 'create'])->name('add-product');
+
+// Handle form submit (POST)
+Route::post('/add-product', [ProductController::class, 'store'])->name('add-product.store');
 Route::get('/edit-product/{id}', [ProductController::class, 'edit']);        // Optional
 Route::delete('/delete-product/{id}', [ProductController::class, 'destroy']); // Optional
 
@@ -98,17 +87,16 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::post('/product/store', [ProductController::class, 'store'])->name('product.store');
 Route::post('/product/delete/{id}', [ProductController::class, 'deleteProduct'])->name('product.delete');
 Route::get('/edit-product/{id}', [ProductController::class, 'edit'])->name('product.edit');
-Route::post('/update-product/{id}', [ProductController::class, 'update'])->name('product.update');
+Route::post('/product/update/{id}', [ProductController::class, 'update'])->name('product.update');
 
 
 // view product
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 Route::get('/product', [ProductController::class, 'index'])->name('product');
 
-// Show the form
-Route::get('/addcustomer', [CustomerController::class, 'index'])->name('addcustomer');
 
-// Handle form POST (submission)
+
+Route::get('/addcustomer', [CustomerController::class, 'index'])->name('addcustomer');
 Route::post('/addcustomer', [CustomerController::class, 'store'])->name('addcustomer.store');
 
 
@@ -127,8 +115,14 @@ Route::post('/customer/update/{id}', [ViewCustomerController::class, 'update'])-
 
 
 
+// orders
+Route::get('/orders',[OrdersController::class,'showOrder'])->name('orders');
+Route::get('/orders/create',[OrdersController::class,'createCustomer'])->name('orders.create');
+Route::get('/place-order',[OrdersController::class,'store'])->name('orders.store');
 
 
+
+// Route::get('/orders',[OrdersController::class,'product'])->name('products');
 // middleware
 // Route::get('/', function () {
 //     return view('login');
