@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
@@ -74,12 +75,14 @@ class ProductController extends Controller
     public function edit($id)
     {
         $product = Product::findOrFail($id);
-        $categories = Category::all(); // Assuming you want to allow category selection
+        $categories = Category::all();
         return view('editProduct', compact('product', 'categories'));
     }
 
     public function update(Request $request, $id)
     {
+
+    Log::info('Update Request:', $request->all());
         $product = Product::findOrFail($id);
 
         $validated = $request->validate([
@@ -88,10 +91,17 @@ class ProductController extends Controller
             'price' => 'required|numeric',
             'description' => 'required',
             'status' => 'required',
-            'images.*' => 'nullable|image|mimes:jpg,jpeg',
+            'images.*' => 'nullable|image|mimes:jpg,jpeg,png',
         ]);
 
-        // Handle image upload if new images provided
+        $data = [
+            'name' => $request->name,
+            'category_id' => $request->category_id,
+            'price' => $request->price,
+            'description' => $request->description,
+            'status' => $request->status,
+        ];
+
         if ($request->hasFile('images')) {
             $images = [];
             foreach ($request->file('images') as $image) {
@@ -99,18 +109,14 @@ class ProductController extends Controller
                 $image->move(public_path('uploads/products'), $filename);
                 $images[] = $filename;
             }
-            $product->image = implode(',', $images);
+            $data['image'] = implode(',', $images);
         }
 
-        // Update other fields
-        $product->update([
-            'name' => $request->name,
-            'category_id' => $request->category_id,
-            'price' => $request->price,
-            'description' => $request->description,
-            'status' => $request->status,
-        ]);
+        $product->update($data);
 
-        return response()->json(['message' => 'Product updated successfully.']);
+        return response()->json([
+            'message' => 'Product updated successfully.',
+            'redirect' => route('tables')  // Make sure route 'tables' exists
+        ]);
     }
 }

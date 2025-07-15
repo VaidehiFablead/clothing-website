@@ -66,38 +66,51 @@
 
 
 @push('scripts')
-<script>
-    $(document).ready(function() {
-        $('#editProductForm').on('submit', function(e) {
-            e.preventDefault();
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        $(document).ready(function() {
+            console.log("Edit Product Script Loaded!");
 
-            let formData = new FormData(this);
+            $('#editProductForm').on('submit', function(e) {
+                e.preventDefault();
+                // alert('AJAX called');
+                let formData = new FormData(this);
 
-            $.ajax({
-                url: "{{ route('product.update', $product->product_id) }}",
-                method: "POST",
-                data: formData,
-                contentType: false,
-                processData: false,
-                beforeSend: function() {
-                    $('#updateBtn').prop('disabled', true).text('Updating...');
-                },
-                success: function(res) {
-                    Swal.fire('Success', res.message, 'success');
-                },
-                error: function(xhr) {
-                    let msg = 'Something went wrong!';
-                    if (xhr.responseJSON?.errors) {
-                        const firstKey = Object.keys(xhr.responseJSON.errors)[0];
-                        msg = xhr.responseJSON.errors[firstKey][0];
+                $.ajax({
+                    url: "{{ route('product.update', $product->product_id) }}",
+                    method: "POST",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    beforeSend: function() {
+                        $('#updateBtn').prop('disabled', true).text('Updating...');
+                    },
+                    success: function(res) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Updated',
+                            text: res.message,
+                            confirmButtonText: 'OK',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = res.redirect;
+                            }
+                        });
+                    },
+                    error: function(xhr) {
+                        let msg = 'Something went wrong!';
+                        if (xhr.responseJSON?.errors) {
+                            const firstKey = Object.keys(xhr.responseJSON.errors)[0];
+                            msg = xhr.responseJSON.errors[firstKey][0];
+                        }
+                        Swal.fire('Error', msg, 'error');
+                    },
+                    complete: function() {
+                        $('#updateBtn').prop('disabled', false).text('Update Product');
                     }
-                    Swal.fire('Error', msg, 'error');
-                },
-                complete: function() {
-                    $('#updateBtn').prop('disabled', false).text('Update Product');
-                }
+                });
             });
         });
-    });
-</script>
+    </script>
 @endpush

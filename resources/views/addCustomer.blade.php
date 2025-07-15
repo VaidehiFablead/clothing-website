@@ -47,7 +47,7 @@
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" name="gender" id="female" value="Female">
                         <label class="form-check-label" for="female">Female</label>
-                        <div class="invalid-feedback">select gender.</div> 
+                        <div class="invalid-feedback">select gender.</div>
                     </div>
                 </div>
 
@@ -77,87 +77,45 @@
 @endsection
 
 @push('script')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         $(document).ready(function() {
-            console.log("hiiii");
-
             $('#addCustomerForm').on('submit', function(e) {
                 e.preventDefault();
-                console.log("form submit");
-                let isValid = true;
 
-                $(".form-control").removeClass("is-invalid");
-
-                const name = $("#name").val().trim();
-                const email = $("#email").val().trim();
-                const password = $("#password").val();
-                const city = $("#city").val().trim();
-                const address = $("#address").val().trim();
-                const contact = $("#contact").val().trim();
-                const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
-
-                if (name === "") {
-                    $("#name").addClass("is-invalid");
-                    isValid = false;
-                }
-
-                if (email === "" || !emailPattern.test(email)) {
-                    $("#email").addClass("is-invalid");
-                    isValid = false;
-                }
-
-                if (password === "" || password.length < 6) {
-                    $("#password").addClass("is-invalid");
-                    isValid = false;
-                }
-
-                if (city === "") {
-                    $("#city").addClass("is-invalid");
-                    isValid = false;
-                }
-
-                if (address === "") {
-                    $("#address").addClass("is-invalid");
-                    isValid = false;
-                }
-
-                if (contact === "" || contact.length !== 10 || isNaN(contact)) {
-                    $("#contact").addClass("is-invalid");
-                    isValid = false;
-                }
-
-                if (!isValid) return;
-
-                let formData = new FormData(this);
+                let form = $(this)[0];
+                let formData = new FormData(form);
 
                 $.ajax({
                     url: "{{ route('addcustomer.store') }}",
-                    type: "POST",
+                    method: "POST",
                     data: formData,
                     contentType: false,
                     processData: false,
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
                     success: function(response) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Customer Added',
-                            text: 'Customer has been added successfully!',
-                            confirmButtonColor: '#3085d6'
-                        });
-
-                        $('#addCustomerForm')[0].reset();
+                        if (response.success) {
+                            Swal.fire('Success', response.message, 'success');
+                            $('#addCustomerForm')[0].reset(); // ✅ FORM RESET
+                            $('.form-control').removeClass('is-invalid');
+                        }
                     },
                     error: function(xhr) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error',
-                            text: 'Something went wrong. Please try again!',
-                            confirmButtonColor: '#d33'
-                        });
+                        if (xhr.status === 422) {
+                            let errors = xhr.responseJSON.errors;
+                            for (let field in errors) {
+                                let input = $('[name="' + field + '"]');
+                                input.addClass('is-invalid');
+                                input.next('.invalid-feedback').text(errors[field][0]);
+                            }
+                        } else {
+                            Swal.fire('Error', 'Something went wrong', 'error');
+                        }
                     }
                 });
+            });
+
+            $('.form-control').on('input', function() {
+                $(this).removeClass('is-invalid');
             });
         });
     </script>

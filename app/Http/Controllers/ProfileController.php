@@ -45,22 +45,24 @@ class ProfileController extends Controller
         return view('changePassword'); // create change-password.blade.php
     }
 
-    // Handle password update
     public function changePassword(Request $request)
     {
-        // Validate inputs
+        // Validate form input
         $request->validate([
             'old_password' => 'required',
             'new_password' => 'required|min:6|confirmed',
         ]);
 
+        // Get user by session email
         $user = Login::where('email', Session::get('email'))->first();
 
+        // Check old password
         if (!$user || $user->password !== $request->old_password) {
             return back()->with('error', 'Old password is incorrect');
         }
 
-        $user->password = $request->new_password; // Hash if using hashed passwords
+        // Update to new password directly (plain text)
+        $user->password = $request->new_password;
         $user->save();
 
         return redirect('/profile')->with('status', 'Password updated successfully');
