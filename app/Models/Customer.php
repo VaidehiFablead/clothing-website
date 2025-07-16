@@ -11,7 +11,7 @@ class Customer extends Model
 
     protected $table = "customer";
 
-    protected $primaryKey = 'customer_id'; // ✅ Tell Laravel your primary key
+    protected $primaryKey = 'customer_id'; 
 
     public $timestamps = true;
     protected $fillable = [

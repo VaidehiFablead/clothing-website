@@ -41,16 +41,16 @@
     </div>
 
     <!-- ✅ jQuery and SweetAlert -->
-    {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+     {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- Bootstrap Bundle -->
     <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 
     <!-- SB Admin -->
-    <script src="{{ asset('assets/js/sb-admin-2.min.js') }}"></script>
+    <script src="{{ asset('assets/js/sb-admin-2.min.js') }}"></script> --}}
 
-    <!-- ✅ Your Blade script stacks --> --}}
+    <!-- ✅ Your Blade script stacks --> 
     @stack('scripts') <!-- ✅ sTHIS is now correct -->
 </body>
 </html>

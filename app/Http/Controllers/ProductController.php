@@ -119,4 +119,11 @@ class ProductController extends Controller
             'redirect' => route('tables')  // Make sure route 'tables' exists
         ]);
     }
+
+
+    public function view(Request $request,$id){
+        return view('viewProduct');
+
+        
+    }
 }

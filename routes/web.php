@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\LoginController;
@@ -23,7 +24,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/login', [LoginController::class, 'showLogin'])->name('login'); // ✅ add ->name('login')
+
+
+Route::get('/login', [LoginController::class, 'showLogin'])->name('login'); 
 Route::post('/login', [LoginController::class, 'login']);
 
 
@@ -88,7 +91,7 @@ Route::post('/product/store', [ProductController::class, 'store'])->name('produc
 Route::post('/product/delete/{id}', [ProductController::class, 'deleteProduct'])->name('product.delete');
 Route::get('/edit-product/{id}', [ProductController::class, 'edit'])->name('product.edit');
 Route::post('/product/update/{id}', [ProductController::class, 'update'])->name('product.update');
-
+Route::get('/product/view/{id}', [ProductController::class, 'view'])->name('product.view');
 
 // view product
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
@@ -116,14 +119,25 @@ Route::post('/customer/update/{id}', [ViewCustomerController::class, 'update'])-
 
 
 // orders
-Route::get('/orders',[OrdersController::class,'showOrder'])->name('orders');
-Route::get('/orders/create',[OrdersController::class,'createCustomer'])->name('orders.create');
-Route::get('/place-order',[OrdersController::class,'store'])->name('orders.store');
+// Route::get('/orders', [OrdersController::class, 'showOrder'])->name('orders');
+// Route::get('/orders/create', [OrdersController::class, 'createCustomer'])->name('orders.create');
+// Route::post('/place-order', [OrdersController::class, 'store'])->name('orders.store');
+Route::get('/orders', [OrdersController::class, 'showOrder'])->name('orders');
+Route::post('/place-order', [OrdersController::class, 'store'])->name('orders.store');
 
 
+// Route::middleware(['auth'])->group(function () {
+//     Route::get('/tables', [ProductController::class, 'showTable'])->name('tables');
+// });
+// login authantication
+// Route::post('/login', [AuthController::class, 'login'])->name('login');
 
-// Route::get('/orders',[OrdersController::class,'product'])->name('products');
-// middleware
-// Route::get('/', function () {
-//     return view('login');
-// })->middleware('auth');
+
+// Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+// Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
+// Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+// //  Protected routes (middleware group)
+// Route::middleware(['auth'])->group(function () {
+//     Route::get('/tables', [ProductController::class, 'showTable'])->name('tables');
+// });

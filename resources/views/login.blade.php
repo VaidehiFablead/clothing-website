@@ -44,7 +44,7 @@
                             <div class="col-md-6 col-lg-7 d-flex align-items-center">
                                 <div class="card-body p-4 p-lg-5 text-black">
 
-                                    <form method="post" id="loginForm">
+                                    <form method="post" id="loginForm" action="{{ route('login') }}">
                                         @csrf
                                         <div class="d-flex text-center mb-3 pb-1 ">
                                             <!-- <i class="fa-solid fa-fan fs-3 pe-2 "></i> -->
