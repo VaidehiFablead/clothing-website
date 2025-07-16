@@ -56,6 +56,17 @@
                     <input type="file" name="images[]" id="images" class="form-control" multiple>
                 </div>
 
+                {{-- Show existing images --}}
+                @if ($product->image)
+                    <div class="mb-3">
+                        <label>Current Images</label><br>
+                        @foreach (explode(',', $product->image) as $img)
+                            <img src="{{ asset('uploads/products/' . $img) }}" width="100" height="100"
+                                class="me-2 mb-2 rounded shadow">
+                        @endforeach
+                    </div>
+                @endif
+
                 <div class="d-flex justify-content-end">
                     <button type="submit" id="updateBtn" class="btn btn-primary">Update Product</button>
                 </div>

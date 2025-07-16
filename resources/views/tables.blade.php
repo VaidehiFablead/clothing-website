@@ -63,6 +63,10 @@
                                             @csrf
                                             <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
                                         </form>
+
+                                        <a href="{{  route('product.view', $product->product_id) }}" class="btn btn-success btn-sm">
+                                           view
+                                        </a>
                                     </td>
                                 </tr>
                             @endforeach

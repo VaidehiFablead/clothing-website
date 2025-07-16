@@ -70,13 +70,13 @@
                     <div class="invalid-feedback">Please enter a contact in 10 digit.</div>
                 </div>
 
-                <button type="submit" class="btn btn-primary">Add Customer</button>
+                <button type="submit" class="btn btn-primary" id="addCustomerbtn">Add Customer</button>
             </form>
         </div>
     </div>
 @endsection
 
-@push('script')
+@push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         $(document).ready(function() {
@@ -92,24 +92,25 @@
                     data: formData,
                     contentType: false,
                     processData: false,
+                    beforeSend: function() {
+                        $('#addCustomerbtn').prop('disabled', true).text('Uploading...');
+                    },
                     success: function(response) {
-                        if (response.success) {
-                            Swal.fire('Success', response.message, 'success');
-                            $('#addCustomerForm')[0].reset(); // ✅ FORM RESET
-                            $('.form-control').removeClass('is-invalid');
-                        }
+                        Swal.fire('Success', 'customer added successfully!', 'success');
+                        $('#addCustomerForm')[0].reset();
                     },
                     error: function(xhr) {
-                        if (xhr.status === 422) {
-                            let errors = xhr.responseJSON.errors;
-                            for (let field in errors) {
-                                let input = $('[name="' + field + '"]');
-                                input.addClass('is-invalid');
-                                input.next('.invalid-feedback').text(errors[field][0]);
-                            }
-                        } else {
-                            Swal.fire('Error', 'Something went wrong', 'error');
+                        let errorMsg = "Something went wrong!";
+                        if (xhr.responseJSON?.errors) {
+                            const errors = xhr.responseJSON.errors;
+                            const firstKey = Object.keys(errors)[0];
+                            errorMsg = errors[firstKey][0];
                         }
+                        Swal.fire('Error', errorMsg, 'error');
+                    },
+                    complete: function() {
+                       $('#addCustomerbtn').prop('disabled', false).text('Add Customer'); // ✅ Fix
+
                     }
                 });
             });

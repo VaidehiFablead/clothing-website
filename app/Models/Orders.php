@@ -9,7 +9,7 @@ class Orders extends Model
 {
     use HasFactory;
 
-    protected $tables = 'order';
+    protected $table = 'order'; 
 
     protected $fillable = [
         'customer_id',
@@ -18,10 +18,4 @@ class Orders extends Model
         'price',
         'subtotal'
     ];
-
-    // ✅ Relationship: An order belongs to a customer
-    public function customer()
-    {
-        return $this->belongsTo(Customer::class, 'customer_id', 'id');
-    }
 }
