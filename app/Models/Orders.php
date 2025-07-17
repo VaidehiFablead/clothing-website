@@ -9,13 +9,15 @@ class Orders extends Model
 {
     use HasFactory;
 
-    protected $table = 'order'; 
+     protected $table = 'order';
 
     protected $fillable = [
         'customer_id',
-        'product_name',
-        'qty',
-        'price',
-        'subtotal'
+        'subtotal' // now only this, product info is removed
     ];
+
+    public function items()
+    {
+        return $this->hasMany(OrderItem::class, 'order_id');
+    }
 }

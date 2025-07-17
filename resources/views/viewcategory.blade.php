@@ -31,10 +31,11 @@
                     <tr>
                         <td>{{ $category->name }}</td>
                         <td>
-                            <a href="{{ route('category.edit', $category->category_id) }}" class="btn btn-sm btn-warning">Edit</a>
+                            <a href="{{ route('category.edit', $category->category_id) }}"
+                                class="btn btn-sm btn-warning">Edit</a>
 
-                            <form action="{{ route('category.delete', $category->category_id) }}" method="POST"
-                                style="display:inline;">
+                            <form action="{{ route('category.delete', $category->category_id) }}"
+                                onclick="return confirm('Are you sure?')" method="POST" style="display:inline;">
                                 @csrf
                                 <button type="submit" class="btn btn-sm btn-danger">Delete</button>
                             </form>

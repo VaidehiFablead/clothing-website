@@ -1,7 +1,7 @@
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
     <!-- Sidebar - Brand -->
-    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('tables') }}">
         <div class="sidebar-brand-icon rotate-n-15">
             <i class="fa-brands fa-wizards-of-the-coast fs-4"></i>
         </div>
@@ -33,14 +33,14 @@
         </div>
     </li>
 
-    <!-- Nav Item - Utilities Collapse Menu -->
+    <!-- Customer Collapse Menu -->
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-            aria-expanded="true" aria-controls="collapseUtilities">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCustomer"
+            aria-expanded="true" aria-controls="collapseCustomer">
             <i class="fas fa-user-large"></i>
             <span>Customer</span>
         </a>
-        <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+        <div id="collapseCustomer" class="collapse" aria-labelledby="headingCustomer" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item" href="{{ route('addcustomer') }}">Add Customer</a>
                 <a class="collapse-item" href="{{ route('viewcustomer') }}">View Customer</a>
@@ -48,23 +48,24 @@
         </div>
     </li>
 
-
     <!-- Divider -->
     <hr class="sidebar-divider">
 
-    <!-- Nav Item - Charts -->
+    <!-- Order Collapse Menu -->
     <li class="nav-item">
-        <a class="nav-link" href="{{ url('/orders') }}">
-            <i class="fas fa-fw fa-chart-area"></i>
-            <span>Orders</span></a>
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOrder"
+            aria-expanded="true" aria-controls="collapseOrder">
+            <i class="fa-solid fa-cloud"></i>
+            <span>Order</span>
+        </a>
+        <div id="collapseOrder" class="collapse" aria-labelledby="headingOrder" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" href="{{ url('orders') }}">Orders</a>
+                <a class="collapse-item" href="{{ url('viewOrder') }}">View Customer</a>
+            </div>
+        </div>
     </li>
 
-    <!-- Nav Item - Tables -->
-    {{-- <li class="nav-item">
-        <a class="nav-link" href="{{ url('/tables') }}">
-            <i class="fas fa-fw fa-table"></i>
-            <span>Tables</span></a>
-    </li> --}}
 
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">

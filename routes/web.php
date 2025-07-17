@@ -42,15 +42,14 @@ Route::post('/profile', [ProfileController::class, 'updateProfile'])->name('prof
 
 
 // tables
-
 Route::get('/tables', [ProductController::class, 'showTable'])->name('tables');
-// Show form (GET)
+// Show form 
 Route::get('/add-product', [ProductController::class, 'create'])->name('add-product');
 
-// Handle form submit (POST)
+// Handle form submit 
 Route::post('/add-product', [ProductController::class, 'store'])->name('add-product.store');
-Route::get('/edit-product/{id}', [ProductController::class, 'edit']);        // Optional
-Route::delete('/delete-product/{id}', [ProductController::class, 'destroy']); // Optional
+Route::get('/edit-product/{id}', [ProductController::class, 'edit']);        
+Route::delete('/delete-product/{id}', [ProductController::class, 'destroy']); 
 
 
 // change password
@@ -103,17 +102,11 @@ Route::get('/addcustomer', [CustomerController::class, 'index'])->name('addcusto
 Route::post('/addcustomer', [CustomerController::class, 'store'])->name('addcustomer.store');
 
 
-
-
 // view Customer
 Route::get('/viewcustomer', [ViewCustomerController::class, 'show'])->name('viewcustomer');
 Route::get('/viewcustomer', [ViewCustomerController::class, 'showTable'])->name('viewcustomer');
 Route::post('/customer/delete/{id}', [ViewCustomerController::class, 'deleteCustomer'])->name('customer.delete');
-
-// Show edit form
 Route::get('/customer/edit/{id}', [ViewCustomerController::class, 'edit'])->name('customer.edit');
-
-// Handle update
 Route::post('/customer/update/{id}', [ViewCustomerController::class, 'update'])->name('customer.update');
 
 
@@ -126,18 +119,5 @@ Route::get('/orders', [OrdersController::class, 'showOrder'])->name('orders');
 Route::post('/place-order', [OrdersController::class, 'store'])->name('orders.store');
 
 
-// Route::middleware(['auth'])->group(function () {
-//     Route::get('/tables', [ProductController::class, 'showTable'])->name('tables');
-// });
-// login authantication
-// Route::post('/login', [AuthController::class, 'login'])->name('login');
+Route::get('/viewOrder',[OrdersController::class,'index'])->name('viewOrder');
 
-
-// Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
-// Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
-// Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-
-// //  Protected routes (middleware group)
-// Route::middleware(['auth'])->group(function () {
-//     Route::get('/tables', [ProductController::class, 'showTable'])->name('tables');
-// });
