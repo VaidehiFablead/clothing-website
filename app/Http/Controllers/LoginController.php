@@ -31,4 +31,11 @@ class LoginController extends Controller
         Session::flush();
         return redirect('/login');
     }
+
+
+
+    // public function __construct()
+    // {
+    //     $this->middleware('guest')->except('logout');
+    // }
 }

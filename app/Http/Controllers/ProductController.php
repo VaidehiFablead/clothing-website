@@ -81,17 +81,16 @@ class ProductController extends Controller
 
     public function update(Request $request, $id)
     {
-
-    Log::info('Update Request:', $request->all());
         $product = Product::findOrFail($id);
 
-        $validated = $request->validate([
+        $request->validate([
             'name' => 'required',
-            'category_id' => 'required',
+            'category_id' => 'required|exists:category,category_id',
             'price' => 'required|numeric',
             'description' => 'required',
             'status' => 'required',
             'images.*' => 'nullable|image|mimes:jpg,jpeg,png',
+            'old_images' => 'nullable|string'
         ]);
 
         $data = [
@@ -102,28 +101,39 @@ class ProductController extends Controller
             'status' => $request->status,
         ];
 
+        $allImages = [];
+
+        // Include old images
+        if ($request->filled('old_images')) {
+            $oldImages = explode(',', $request->old_images);
+            $allImages = array_merge($allImages, $oldImages);
+        }
+
+        // Add new uploaded images
         if ($request->hasFile('images')) {
-            $images = [];
             foreach ($request->file('images') as $image) {
                 $filename = time() . '_' . $image->getClientOriginalName();
                 $image->move(public_path('uploads/products'), $filename);
-                $images[] = $filename;
+                $allImages[] = $filename;
             }
-            $data['image'] = implode(',', $images);
         }
+
+        $data['image'] = implode(',', $allImages);
 
         $product->update($data);
 
         return response()->json([
             'message' => 'Product updated successfully.',
-            'redirect' => route('tables')  // Make sure route 'tables' exists
+            'redirect' => route('tables')
         ]);
     }
 
 
-    public function view(Request $request,$id){
-        return view('viewProduct');
 
-        
+
+    public function view($id)
+    {
+        $product = Product::with('category')->findOrFail($id);
+        return view('viewProduct', compact('product'));
     }
 }

@@ -56,14 +56,26 @@
                     <input type="file" name="images[]" id="images" class="form-control" multiple>
                 </div>
 
-                {{-- Show existing images --}}
                 @if ($product->image)
                     <div class="mb-3">
-                        <label>Current Images</label><br>
-                        @foreach (explode(',', $product->image) as $img)
-                            <img src="{{ asset('uploads/products/' . $img) }}" width="100" height="100"
-                                class="me-2 mb-2 rounded shadow">
-                        @endforeach
+                        <label>Old Images</label><br>
+                        <div id="oldImagesContainer">
+                            @php
+                                $oldImages = explode(',', $product->image);
+                            @endphp
+                            @foreach ($oldImages as $img)
+                                <div class="image-box d-inline-block position-relative me-2 mb-2"
+                                    data-image="{{ $img }}">
+                                    <img src="{{ asset('uploads/products/' . $img) }}" width="100" height="100"
+                                        class="rounded shadow">
+                                    <button type="button"
+                                        class="btn btn-sm btn-danger position-absolute top-0 end-0 remove-image"
+                                        title="Remove" style="padding: 2px 6px;">×</button>
+                                </div>
+                            @endforeach
+                        </div>
+                        <!-- Store updated list of old images -->
+                        <input type="hidden" name="old_images" id="old_images" value="{{ $product->image }}">
                     </div>
                 @endif
 
@@ -81,7 +93,20 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         $(document).ready(function() {
-            console.log("Edit Product Script Loaded!");
+        
+            // Handle image remove
+            $(document).on('click', '.remove-image', function() {
+                const imageBox = $(this).closest('.image-box');
+                const imageName = imageBox.data('image');
+
+                // Remove image element from view
+                imageBox.remove();
+
+                // Update the hidden input to remove the deleted image
+                let currentImages = $('#old_images').val().split(',');
+                let updatedImages = currentImages.filter(img => img !== imageName);
+                $('#old_images').val(updatedImages.join(','));
+            });
 
             $('#editProductForm').on('submit', function(e) {
                 e.preventDefault();
