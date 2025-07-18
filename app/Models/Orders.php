@@ -7,17 +7,23 @@ use Illuminate\Database\Eloquent\Model;
 
 class Orders extends Model
 {
-    use HasFactory;
+    use HasFactory; 
 
-     protected $table = 'order';
+    protected $table = 'order';
 
+    protected $primaryKey='order_id';
     protected $fillable = [
         'customer_id',
         'subtotal' // now only this, product info is removed
     ];
 
-    public function items()
+
+    public function customer()
     {
-        return $this->hasMany(OrderItem::class, 'order_id');
+        return $this->belongsTo(Customer::class, 'customer_id');
+    }
+
+    public function orderItem(){
+        return $this->hasMany(OrderItem::class,'order_id');
     }
 }
