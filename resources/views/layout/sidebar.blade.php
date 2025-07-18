@@ -61,7 +61,7 @@
         <div id="collapseOrder" class="collapse" aria-labelledby="headingOrder" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item" href="{{ url('orders') }}">Orders</a>
-                <a class="collapse-item" href="{{ url('viewOrder') }}">View Customer</a>
+                <a class="collapse-item" href="{{ url('viewOrder') }}">View Orders</a>
             </div>
         </div>
     </li>

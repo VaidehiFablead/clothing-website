@@ -20,34 +20,6 @@ class OrdersController extends Controller
     }
 
 
-    // public function store(Request $request)
-    // {
-
-    //     $request->validate([
-    //         'customer_id' => 'required|exists:customer,customer_id',
-    //         'product_id' => 'required|array',
-    //         'product_name' => 'required|array',
-    //         'price' => 'required|array',
-    //         'qty' => 'required|array',
-    //         'total' => 'required|array',
-    //         'subtotal' => 'required'
-    //     ]);
-
-    //     foreach ($request->product_id as $index => $productId) {
-    //         Orders::create([
-    //             'customer_id' => $request->customer_id,
-    //             'product_name' => $request->product_name[$index],
-    //             'qty' => $request->qty[$index],
-    //             'price' => $request->price[$index],
-    //             'subtotal' => $request->total[$index],
-    //         ]);
-    //     }
-
-    //     return response()->json(['message' => 'Order placed successfully']);
-    // }
-
-
-
     public function store(Request $request)
     {
         $request->validate([
@@ -57,35 +29,51 @@ class OrdersController extends Controller
             'price' => 'required|array',
             'qty' => 'required|array',
             'total' => 'required|array',
-            'subtotal' => 'required'
+            'subtotal' => 'required|numeric'
         ]);
 
-        // Step 1: Create one order
-        $order = Orders::create([
-            'customer_id' => $request->customer_id,
+        // Step 1: Create the order
+        // $order = Orders::create([
+        //     'customer_id' => $request->customer_id,
+        //     'subtotal' => $request->subtotal,
+        // ]);
+
+        $order = new Orders();
+        $order->customer_id = $request->customer_id;
+        $order->subtotal = $request->subtotal;
+        $order->save();
+
+        // Convert arrays to comma-separated strings or JSON
+        // $productIds = implode(',', $request->product_id);
+        $productNames = json_encode($request->product_name);
+        $quantities = json_encode($request->qty);
+        $prices = json_encode($request->price);
+        // dd( $order->order_id);
+        // Insert single row into order_items
+        OrderItem::create([
+            'order_id' => $order->order_id,
+
+            // 'product_id' => $productIds,
+            'product_name' => $productNames,
+            'qty' => $quantities,
+            'price' => $prices,
             'subtotal' => $request->subtotal,
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
 
-        // Step 2: Insert multiple order_items
-        foreach ($request->product_id as $index => $productId) {
-                OrderItem::create([
-                'order_id' => $order->id,
-                'product_id' => $productId,
-                'product_name' => $request->product_name[$index],
-                'qty' => $request->qty[$index],
-                'price' => $request->price[$index],
-                'total' => $request->total[$index],
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
-        }
 
-        return response()->json(['message' => 'Order placed successfully']);
+        return response()->json(['message' => 'Order placed successfully with combined values']);
     }
+
+
 
     public function index()
     {
         $orders = Orders::all();
+        // print_r($orders);die;
+        
+        // $orders = Orders::select('order.*', 'order_items.product_name')->join('events_schedule', 'events_schedule.event_id', '=', 'events.id')->get();
         return view('viewOrder', compact('orders'));
     }
 }

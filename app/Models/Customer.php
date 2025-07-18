@@ -22,7 +22,7 @@ class Customer extends Model
         'gender',
         'city',
         'address',
-        'contact'
+        'contact_info'
     ];
 
      

@@ -14,6 +14,7 @@ class CustomerController extends Controller
 
     public function store(Request $request)
     {
+        // dd($request->all());
         $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:customer,email',
@@ -41,7 +42,7 @@ class CustomerController extends Controller
             'gender' => $request->gender,
             'city' => $request->city,
             'address' => $request->address,
-            'contact' => $request->contact,
+            'contact_info' => $request->contact,
         ]);
 
         return response()->json(['success' => true, 'message' => 'Customer added successfully!']);

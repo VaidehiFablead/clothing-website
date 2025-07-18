@@ -49,11 +49,11 @@ class ProductController extends Controller
 
         return redirect()->back()->with('success', 'Product added successfully!');
     }
-
+    
     //  Add this method to show product table
     public function showTable()
     {
-        $products = Product::with('category')->get(); // eager load category
+        $products = Product::with('category')->latest()->get(); // eager load category
         return view('tables', compact('products'));
     }
 

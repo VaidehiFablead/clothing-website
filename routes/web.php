@@ -121,3 +121,5 @@ Route::post('/place-order', [OrdersController::class, 'store'])->name('orders.st
 
 Route::get('/viewOrder',[OrdersController::class,'index'])->name('viewOrder');
 
+// Route::post('/delete-order/{id}', [OrdersController::class, 'deleteOrder'])->name('order.delete');
+
